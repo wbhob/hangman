@@ -1,0 +1,16 @@
+div.blanks {
+    float: right;
+    display: inline;
+    margin: 30vh auto;
+    margin-right: 5vw;
+    div.blank {
+        height: 1px;
+        width: 40px;
+        padding:30px 10px;
+        border-bottom: 1px solid black;
+        display: inline;
+        float: left;
+        text-align: center;
+        margin:10px;
+    }
+}

@@ -1,0 +1,29 @@
+div.gallows {
+    display: inline;
+    margin-left: 20px;
+    margin-top: 40px;
+    float: left;
+    div {
+        background: black;
+    }
+    div.hang {
+        width: 5px;
+        height: 30px;
+        margin-left: calc(20vw - 5px);
+    }
+    div.top {
+        width: 10vw;
+        height: 5px;
+        margin-left: 10vw;
+    }
+    div.pole {
+        height: 40vh;
+        width: 5px;
+        margin-left: 10vw;
+        margin-top: -30px;
+    }
+    div.bottom {
+        height: 5px;
+        width: 20vw;
+    }
+}
