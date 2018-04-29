@@ -1,6 +1,8 @@
 import * as alphabet from 'alphabet';
 import * as $ from 'jquery';
 
+import { API_KEY } from './api_key';
+
 let letters: string[] = [];
 let threats = 0;
 let classes = ['head', 'body', 'left-arm', 'right-arm', 'left-leg', 'right-leg'];
@@ -42,7 +44,7 @@ function addThreat() {
 
 async function generateWord() {
     let headers = new Headers();
-    headers.append('X-Mashape-Key', 'ut0KzXyAVSmsh6regp5PLZ5jofkrp1BtW6cjsnk1MvhbJjR21p')
+    headers.append('X-Mashape-Key', API_KEY);
     headers.append('Accept', 'application/json');
     let word = (await (await fetch('https://wordsapiv1.p.mashape.com/words/?random=true', { headers })).json()).word;
     $(document).ready(() => {
