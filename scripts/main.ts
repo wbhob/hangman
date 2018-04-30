@@ -1,15 +1,15 @@
 import * as alphabet from 'alphabet';
 import * as $ from 'jquery';
-
-import { API_KEY } from './api_key';
+import * as  randomWords from 'random-words';
 
 let letters: string[] = [];
 let threats = 0;
 let classes = ['head', 'body', 'left-arm', 'right-arm', 'left-leg', 'right-leg'];
 let word: string;
+let correctLetters = 0;
 
-$(document).ready(async () => {
-    await generateWord();
+$(document).ready(() => {
+    generateWord();
 
     for (let letter of alphabet.upper) {
         let button = document.createElement('button');
@@ -17,13 +17,23 @@ $(document).ready(async () => {
         button.onclick = function () {
             letters.push(letter);
             (<HTMLButtonElement>this).disabled = true;
-            let blanks = document.querySelectorAll('.blank.' + letter);
+            let blanks = $('.blank.' + letter);
+            console.log(blanks);
+
             if (blanks.length > 0) {
-                blanks.forEach((el: any) => {
-                    el.style.color = 'black';
+                blanks.each(function () {
+                    correctLetters++;
+                    $(this).css('color', 'black');
                 });
             } else {
                 addThreat();
+            }
+
+            if (correctLetters == word.length) {
+                setTimeout(() => {
+                    alert('YOU WIN!');
+                    reset();
+                }, 500)
             }
         }
         $('.keyboard').append(button);
@@ -34,43 +44,39 @@ function addThreat() {
     let threat: HTMLDivElement = document.querySelector('.' + classes[threats]);
     threat.style.visibility = 'visible';
     if (threats >= classes.length - 1) {
-        alert('YOU LOSE!');
-        reset();
+        setTimeout(() => {
+            alert('YOU LOSE!');
+            reset();
+        }, 400);
         return;
     }
     threats++;
 
 }
 
-async function generateWord() {
-    let headers = new Headers();
-    headers.append('X-Mashape-Key', API_KEY);
-    headers.append('Accept', 'application/json');
-    let word = (await (await fetch('https://wordsapiv1.p.mashape.com/words/?random=true', { headers })).json()).word;
+function generateWord() {
+    word = randomWords();
     $(document).ready(() => {
         for (let letter of word) {
             letter = letter.toUpperCase();
-            if (letter != ' ') {
-                let blank = document.createElement('div');
-                blank.classList.add('blank');
-                blank.classList.add(letter);
-                blank.style.color = 'white';
-                blank.innerText = letter;
-                $('.blanks').append(blank);
-            }
-
+            let blank = document.createElement('div');
+            blank.classList.add('blank');
+            blank.classList.add(letter);
+            blank.style.color = 'white';
+            blank.innerText = letter;
+            $('.blanks').append(blank);
         }
-    })
+    });
 }
 
 async function reset() {
     threats = 0;
+    correctLetters = 0;
     letters = [];
     $('.blank').remove();
     $('button').removeAttr('disabled');
     for (let c of classes) {
         $('.' + c).css('visibility', 'hidden');
-
     }
     await generateWord();
 }
